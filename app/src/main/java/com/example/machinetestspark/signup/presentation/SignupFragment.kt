@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import com.example.machinetestspark.R
 
 
-
 class SignupFragment : Fragment() {
 
 }
