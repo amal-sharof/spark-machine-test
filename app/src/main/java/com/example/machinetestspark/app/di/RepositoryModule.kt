@@ -1,6 +1,7 @@
 package com.example.machinetestspark.app.di
 
 import androidx.lifecycle.ViewModel
+import com.example.machinetestspark.login.domain.repository.LoginRepository
 import com.example.machinetestspark.signup.data.repository.SignUpRepositoryImpl
 import com.example.machinetestspark.signup.domain.repository.SignUpRepository
 import dagger.Binds
@@ -12,5 +13,8 @@ import dagger.hilt.android.components.ViewModelComponent
 @InstallIn(ViewModelComponent::class)
 abstract class RepositoryModule {
 @Binds
- abstract fun provideLoginRepository(signUpRepositoryImpl: SignUpRepositoryImpl): SignUpRepository
+ abstract fun provideSignUpRepository(signUpRepositoryImpl: SignUpRepositoryImpl): SignUpRepository
+
+ @Binds
+ abstract fun provideLoginRepository(loginRepository: LoginRepository): LoginRepository
 }
