@@ -1,6 +1,7 @@
 package com.example.machinetestspark.app.di
 
 import com.example.machinetestspark.app.common.Constants.BASE_URL
+import com.example.machinetestspark.signup.data.service.SignUpService
 import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -48,5 +49,11 @@ fun  provideHttpClient(): OkHttpClient {
             .addConverterFactory(converterFactory)
             .addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideSignUpService(retrofit: Retrofit): SignUpService{
+        return retrofit.create(SignUpService::class.java)
     }
 }
