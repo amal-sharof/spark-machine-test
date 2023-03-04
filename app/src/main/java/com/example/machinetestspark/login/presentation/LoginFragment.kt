@@ -5,9 +5,58 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.example.machinetestspark.R
+import com.example.machinetestspark.databinding.FragmentLoginBinding
+import com.example.machinetestspark.login.domain.model.LoginResponseModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+
+@AndroidEntryPoint
+class LoginFragment : Fragment(R.layout.fragment_login) {
+    private lateinit var binding: FragmentLoginBinding
+    private val viewModel by viewModels<LoginViewModel>()
 
 
-class LoginFragment : Fragment() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding = FragmentLoginBinding.bind(view)
+        setListeners()
+        observeState()
+    }
+
+
+
+    private fun setListeners() {
+        with(binding){
+            logInBtn.setOnClickListener {
+                viewModel.validateLogin(
+                    userName = userId.text.toString(),
+                    password = passwordText.text.toString()
+                )
+            }
+        }
+    }
+
+    private fun observeState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.loginState.collect{
+                    handleLoginSuccess(it.loginSuccess)
+                }
+            }
+        }
+    }
+
+    private fun handleLoginSuccess(loginSuccess: LoginResponseModel?) {
+        if (loginSuccess != null){
+            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToDashboardFragment())
+        }
+
+    }
 
 }

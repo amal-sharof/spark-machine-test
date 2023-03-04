@@ -57,7 +57,7 @@ class SignUpViewModel @Inject constructor(
                         ) }
                     }
                     is Resource.Error -> handleError(error = responseData.error)
-                    else -> {}
+                    else -> Unit
                 }
             }
     }

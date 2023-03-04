@@ -1,6 +1,7 @@
 package com.example.machinetestspark.app.di
 
 import com.example.machinetestspark.app.common.Constants.BASE_URL
+import com.example.machinetestspark.dashboard.data.service.DashboardService
 import com.example.machinetestspark.login.data.service.LoginService
 import com.example.machinetestspark.signup.data.service.SignUpService
 import com.skydoves.sandwich.adapters.ApiResponseCallAdapterFactory
@@ -13,6 +14,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.create
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -62,5 +64,11 @@ fun  provideHttpClient(): OkHttpClient {
     @Singleton
     fun provideLoginService(retrofit: Retrofit): LoginService{
         return retrofit.create(LoginService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDashboardService(retrofit: Retrofit): DashboardService{
+        return retrofit.create(DashboardService::class.java)
     }
 }
