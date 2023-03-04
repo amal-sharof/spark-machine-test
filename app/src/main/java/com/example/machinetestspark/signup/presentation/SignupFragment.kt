@@ -58,7 +58,7 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
 
     private fun handleSignUpSuccess(signUpSuccess: SignUpResponseModel?) {
         if (signUpSuccess != null){
-            findNavController().navigate(SignupFragmentDirections.actionSignupFragmentToDashboardFragment())
+            findNavController().navigate(SignupFragmentDirections.actionSignupFragmentToLoginFragment())
         }
     }
 

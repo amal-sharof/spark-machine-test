@@ -3,6 +3,8 @@ package com.example.machinetestspark.login.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.machinetestspark.app.common.Resource
+import com.example.machinetestspark.app.datastore.DataStoreManager
+import com.example.machinetestspark.app.datastore.UserDetails
 import com.example.machinetestspark.login.domain.model.LoginRequestModel
 import com.example.machinetestspark.login.domain.repository.LoginRepository
 import com.example.machinetestspark.signup.domain.model.SignUpRequestModel
@@ -15,7 +17,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginRepository: LoginRepository
+    private val loginRepository: LoginRepository,
+    private val dataStoreManager: DataStoreManager
+
 ): ViewModel(){
 
     private val _loginState = MutableStateFlow(LoginState(loading = false))
@@ -54,6 +58,10 @@ class LoginViewModel @Inject constructor(
                     else -> {}
                 }
             }
+    }
+
+    fun saveUserData(userData: UserDetails) = viewModelScope.launch{
+        dataStoreManager.saveUserDetails(userData)
     }
 
     private fun handleError(error: String) {

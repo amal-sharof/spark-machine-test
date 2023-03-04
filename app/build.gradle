@@ -56,25 +56,11 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:2.5.3"
     apply plugin: "androidx.navigation.safeargs"
 
-    // RxJava
-    implementation "io.reactivex.rxjava3:rxjava:3.0.9"
-    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
-    implementation "com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0"
-
     //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
 //    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.8'
-
-    //Recyclerview
-    implementation 'androidx.recyclerview:recyclerview:1.2.1'
-    implementation 'androidx.cardview:cardview:1.0.0'
-
-    // Glide
-    implementation 'com.github.bumptech.glide:glide:4.13.1'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
     // Lifecycle + ViewModel & LiveData
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
@@ -90,17 +76,11 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.8'
 
     // Network Helper
-    implementation "com.github.skydoves:sandwich:1.2.4"
+    implementation "com.github.skydoves:sandwich:1.2.5"
 
     // Moshi
     implementation 'com.squareup.moshi:moshi:1.13.0'
     kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.13.0'
-
-    //pdf viwer
-    implementation "com.dmitryborodin:pdfview-android:1.1.0"
-
-    //
-    // implementation "com.github.skydoves:san"
 
     // Data store
     implementation "androidx.datastore:datastore-preferences:1.0.0"

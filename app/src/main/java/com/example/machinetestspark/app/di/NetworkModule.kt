@@ -9,6 +9,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
@@ -21,21 +22,20 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-@Provides
-@Singleton
 
-fun  provideHttpClient(): OkHttpClient {
-    val okHttpClient = OkHttpClient.Builder()
-    val httpInterceptor =
-        HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-    okHttpClient.addInterceptor(httpInterceptor)
+    @Provides
+    @Singleton
+    fun provideHttpClient(): OkHttpClient {
+        val okHttpClient = OkHttpClient.Builder()
+        val httpInterceptor =
+            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+        okHttpClient.addInterceptor(httpInterceptor)
 
-
-    okHttpClient.connectTimeout(30, TimeUnit.SECONDS)
-    okHttpClient.readTimeout(30, TimeUnit.SECONDS)
-    okHttpClient.writeTimeout(30, TimeUnit.SECONDS)
-    return okHttpClient.build()
-}
+        okHttpClient.connectTimeout(30, TimeUnit.SECONDS)
+        okHttpClient.readTimeout(30, TimeUnit.SECONDS)
+        okHttpClient.writeTimeout(30, TimeUnit.SECONDS)
+        return okHttpClient.build()
+    }
 
     @Provides
     @Singleton
@@ -56,19 +56,21 @@ fun  provideHttpClient(): OkHttpClient {
 
     @Provides
     @Singleton
-    fun provideSignUpService(retrofit: Retrofit): SignUpService{
+    fun provideSignUpService(retrofit: Retrofit): SignUpService {
         return retrofit.create(SignUpService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideLoginService(retrofit: Retrofit): LoginService{
+    fun provideLoginService(retrofit: Retrofit): LoginService {
         return retrofit.create(LoginService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideDashboardService(retrofit: Retrofit): DashboardService{
+    fun provideDashboardService(retrofit: Retrofit): DashboardService {
         return retrofit.create(DashboardService::class.java)
     }
+
+
 }

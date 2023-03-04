@@ -27,7 +27,8 @@ data class LoginResponseDto(
             userName = username?: "",
             firstName = firstname?: "",
             lastName = lastname?: "",
-            email = email?: ""
+            email = email?: "",
+            authToken = access?: ""
         )
     }
 }

@@ -5,10 +5,7 @@ import com.example.machinetestspark.app.common.Resource
 import com.example.machinetestspark.dashboard.data.service.DashboardService
 import com.example.machinetestspark.dashboard.domain.model.DashboardResponseModel
 import com.example.machinetestspark.dashboard.domain.repository.DashboardRepository
-import com.skydoves.sandwich.StatusCode
-import com.skydoves.sandwich.suspendOnError
-import com.skydoves.sandwich.suspendOnFailure
-import com.skydoves.sandwich.suspendOnSuccess
+import com.skydoves.sandwich.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -19,7 +16,7 @@ class DashboardRepositoryImpl @Inject constructor(
     override fun dashboard(authToken: String): Flow<Resource<List<DashboardResponseModel>>> =
         flow{
             emit(Resource.Loading)
-            dashboardService.dashboard(authToken)
+            dashboardService.dashboard("Bearer $authToken")
                 .suspendOnSuccess {
                     val responseDto = this.data
                     val response = responseDto.map { it.toDashboardResponseModel() }
@@ -30,6 +27,8 @@ class DashboardRepositoryImpl @Inject constructor(
                         else -> emit(Resource.Error(Constants.GENERIC_ERROR_MESSAGE))
                     }
                 }.suspendOnFailure {
+                    emit(Resource.Error(Constants.NO_INTERNET_ERROR_MESSAGE))
+                }.suspendOnException {
                     emit(Resource.Error(Constants.NO_INTERNET_ERROR_MESSAGE))
                 }
     }

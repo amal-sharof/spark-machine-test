@@ -4,6 +4,7 @@ import com.example.machinetestspark.dashboard.domain.model.DashboardResponseMode
 
 data class DashboardState(
     val dashboardSuccess: List<DashboardResponseModel>? = null,
+    val authToken: String = "",
     val error:String = "",
     val loading: Boolean = false
 )

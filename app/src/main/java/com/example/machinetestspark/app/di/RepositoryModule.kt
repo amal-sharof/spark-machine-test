@@ -23,4 +23,6 @@ abstract class RepositoryModule {
 
  @Binds
  abstract fun provideDashboardRepository(dashboardRepositoryImpl: DashboardRepositoryImpl): DashboardRepository
+
+
 }

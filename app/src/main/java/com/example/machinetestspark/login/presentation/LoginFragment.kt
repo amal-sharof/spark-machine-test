@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.machinetestspark.R
+import com.example.machinetestspark.app.datastore.UserDetails
 import com.example.machinetestspark.databinding.FragmentLoginBinding
 import com.example.machinetestspark.login.domain.model.LoginResponseModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,9 +19,9 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LoginFragment : Fragment(R.layout.fragment_login) {
+
     private lateinit var binding: FragmentLoginBinding
     private val viewModel by viewModels<LoginViewModel>()
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -29,8 +30,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         observeState()
     }
 
-
-
     private fun setListeners() {
         with(binding){
             logInBtn.setOnClickListener {
@@ -38,6 +37,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     userName = userId.text.toString(),
                     password = passwordText.text.toString()
                 )
+            }
+            signUpBtn.setOnClickListener {
+                findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToSignupFragment())
             }
         }
     }
@@ -54,9 +56,13 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private fun handleLoginSuccess(loginSuccess: LoginResponseModel?) {
         if (loginSuccess != null){
+            val userData = UserDetails(
+                authToken = loginSuccess.authToken,
+                email = loginSuccess.email,
+                userId = loginSuccess.userName
+            )
+            viewModel.saveUserData(userData)
             findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToDashboardFragment())
         }
-
     }
-
 }

@@ -11,5 +11,5 @@ import retrofit2.http.Query
 
 interface DashboardService {
     @GET("dashboard/")
-    suspend fun dashboard(@Header("Authorization") authToken: String): ApiResponse<DashboardResponseDto>
+    suspend fun dashboard(@Header("Authorization") authToken: String): ApiResponse<List<DashboardResponseDto.DashboardResponseDtoItem>>
 }
