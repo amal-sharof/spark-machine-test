@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -50,6 +51,7 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.signUpState.collect{
+                    handleLoading(true)
                     handleSignUpSuccess(it.signUpSuccess)
                 }
             }
@@ -58,7 +60,18 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
 
     private fun handleSignUpSuccess(signUpSuccess: SignUpResponseModel?) {
         if (signUpSuccess != null){
+            progressBarHide()
             findNavController().navigate(SignupFragmentDirections.actionSignupFragmentToLoginFragment())
+        }
+    }
+
+    private fun handleLoading(flag: Boolean) {
+        binding.loadingProgressBar.isVisible = flag
+    }
+
+    private fun progressBarHide() {
+        if (binding.loadingProgressBar.isVisible) {
+            binding.loadingProgressBar.visibility = View.GONE
         }
     }
 

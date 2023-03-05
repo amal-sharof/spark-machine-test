@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -48,6 +49,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.loginState.collect{
+                    handleLoading(true)
                     handleLoginSuccess(it.loginSuccess)
                 }
             }
@@ -56,6 +58,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private fun handleLoginSuccess(loginSuccess: LoginResponseModel?) {
         if (loginSuccess != null){
+            progressBarHide()
             val userData = UserDetails(
                 authToken = loginSuccess.authToken,
                 email = loginSuccess.email,
@@ -63,6 +66,16 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             )
             viewModel.saveUserData(userData)
             findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToDashboardFragment())
+        }
+    }
+
+    private fun handleLoading(flag: Boolean) {
+        binding.loadingProgressBar.isVisible = flag
+    }
+
+    private fun progressBarHide() {
+        if (binding.loadingProgressBar.isVisible) {
+            binding.loadingProgressBar.visibility = View.GONE
         }
     }
 }
