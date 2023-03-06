@@ -20,12 +20,6 @@ class DashboardViewModel @Inject constructor(
     val dashboardState = _dashboardState.asStateFlow()
 
 
-    /*  *//*init {
-        viewModelScope.launch {
-            getToken()
-        }*//*
-
-    }*/
 
     fun getToken() = viewModelScope.launch {
         dataStoreManager.getUserFromPreferencesStore().collect { userDetails ->
@@ -42,6 +36,7 @@ class DashboardViewModel @Inject constructor(
         dashboardRepository.dashboard(token)
             .collect { responseData ->
                 when (responseData) {
+                    is Resource.Loading -> handleLoading()
                     is Resource.Success -> {
                         _dashboardState.update {
                             it.copy(
@@ -57,6 +52,18 @@ class DashboardViewModel @Inject constructor(
             }
     }
 
+    fun clearData() = viewModelScope.launch {
+        dataStoreManager.clearFromPreferences()
+    }
+
+    private fun handleLoading() {
+        _dashboardState.update {
+            it.copy(
+                loading = true,
+                error = ""
+            )
+        }
+    }
 
     private fun handleError(error: String) {
         _dashboardState.update {

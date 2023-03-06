@@ -1,13 +1,17 @@
 package com.example.machinetestspark.dashboard.presentation
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.machinetestspark.R
@@ -19,8 +23,16 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
+    val positiveButtonClick = { dialog: DialogInterface, which: Int ->
+        viewModel.clearData()
+        findNavController().navigate(DashboardFragmentDirections.actionDashboardFragmentToLoginFragment())
+    }
+    val negativeButtonClick = { dialog: DialogInterface, which: Int ->
+        dialog.dismiss()
+    }
+
     private lateinit var binding: FragmentDashboardBinding
-    private val viewModel by viewModels<DashboardViewModel> ()
+    private val viewModel by viewModels<DashboardViewModel>()
     private val adapter: ImageAdapter by lazy { ImageAdapter() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -34,9 +46,10 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     }
 
     private fun setListeners() {
-        with(binding){
+        with(binding) {
             btnLogout.setOnClickListener {
-                findNavController().navigate(DashboardFragmentDirections.actionDashboardFragmentToLoginFragment())
+                basicAlert(btnLogout)
+
             }
         }
 
@@ -48,14 +61,31 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
     private fun observeState() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.dashboardState.collect{
-                    handleLoading(true)
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.dashboardState.collect {
+                    handleLoading(it.loading)
                     handleDashboardSuccess(it.dashboardSuccess)
                     handleAuthToken(it.authToken)
                 }
             }
         }
+    }
+
+
+    private fun basicAlert(view: View) {
+
+        val builder = AlertDialog.Builder(requireContext())
+
+        with(builder)
+        {
+            setTitle("Logout?")
+            setMessage("Are you sure you have to logout from your account?")
+            setPositiveButton("OK", DialogInterface.OnClickListener(function = positiveButtonClick))
+            setNegativeButton(android.R.string.no, negativeButtonClick)
+
+            show()
+        }
+
     }
 
     private fun handleAuthToken(authToken: String) {
@@ -65,7 +95,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     }
 
     private fun handleDashboardSuccess(dashboardSuccess: List<DashboardResponseModel>?) {
-        if (dashboardSuccess != null){
+        if (dashboardSuccess != null) {
             adapter.submitList(dashboardSuccess)
             progressBarHide()
         }
