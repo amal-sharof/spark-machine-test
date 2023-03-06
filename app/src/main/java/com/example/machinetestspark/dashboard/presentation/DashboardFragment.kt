@@ -23,14 +23,6 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
-    val positiveButtonClick = { dialog: DialogInterface, which: Int ->
-        viewModel.clearData()
-        findNavController().navigate(DashboardFragmentDirections.actionDashboardFragmentToLoginFragment())
-    }
-    val negativeButtonClick = { dialog: DialogInterface, which: Int ->
-        dialog.dismiss()
-    }
-
     private lateinit var binding: FragmentDashboardBinding
     private val viewModel by viewModels<DashboardViewModel>()
     private val adapter: ImageAdapter by lazy { ImageAdapter() }
@@ -80,12 +72,15 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         {
             setTitle("Logout?")
             setMessage("Are you sure you have to logout from your account?")
-            setPositiveButton("OK", DialogInterface.OnClickListener(function = positiveButtonClick))
-            setNegativeButton(android.R.string.no, negativeButtonClick)
-
+            setPositiveButton("YES") { _: DialogInterface, _: Int ->
+                viewModel.clearData()
+                findNavController().navigate(DashboardFragmentDirections.actionDashboardFragmentToLoginFragment())
+            }
+            setNegativeButton("CANCEL") { dialog: DialogInterface, _: Int ->
+                dialog.dismiss()
+            }
             show()
         }
-
     }
 
     private fun handleAuthToken(authToken: String) {
@@ -110,5 +105,4 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             binding.loadingProgressBar.visibility = View.GONE
         }
     }
-
 }

@@ -60,7 +60,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         if (error.isNotBlank()){
             Toast.makeText(requireContext(),error, Toast.LENGTH_SHORT).show()
         }
-
     }
 
     private fun handleLoginSuccess(loginSuccess: LoginResponseModel?) {

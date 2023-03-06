@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -13,19 +12,16 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.machinetestspark.R
-import com.example.machinetestspark.databinding.FragmentSignupBinding
 import com.example.machinetestspark.auth.domain.model.signup.SignUpResponseModel
-import com.example.machinetestspark.dashboard.presentation.DashboardFragmentDirections
+import com.example.machinetestspark.databinding.FragmentSignupBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SignupFragment : Fragment(R.layout.fragment_signup) {
+
     private lateinit var binding: FragmentSignupBinding
     private val viewModel by viewModels<SignUpViewModel> ()
-    val positiveButtonClick = { dialog: DialogInterface, which: Int ->
-        dialog.dismiss()
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -71,7 +67,9 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
             setTitle("Error")
             setMessage("Make sure password is at-least 8 characters and not only numeric. \n" +
                     "Make sure email id is valid.\nIf the error occurs again, try changing your username.")
-            setPositiveButton("OK", DialogInterface.OnClickListener(function = positiveButtonClick))
+            setPositiveButton("OK") { dialog: DialogInterface, _: Int ->
+                dialog.dismiss()
+            }
             show()
         }
     }

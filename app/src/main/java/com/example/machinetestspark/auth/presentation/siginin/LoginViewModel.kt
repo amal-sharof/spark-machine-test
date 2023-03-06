@@ -18,12 +18,10 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val dataStoreManager: DataStoreManager
-
 ): ViewModel(){
 
     private val _loginState = MutableStateFlow(LoginState(loading = false))
     val loginState = _loginState.asStateFlow()
-
 
     fun validateLogin( userName: String?,
                        password: String?) =  viewModelScope.launch{
@@ -40,7 +38,6 @@ class LoginViewModel @Inject constructor(
                 loginRequest(request)
             }
         }
-
     }
 
     private suspend fun loginRequest(loginRequestModel: LoginRequestModel){

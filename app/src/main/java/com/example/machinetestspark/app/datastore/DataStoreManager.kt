@@ -12,12 +12,10 @@ class DataStoreManager(val context: Context) {
     private val Context.userPreferencesDataStore: DataStore<Preferences> by preferencesDataStore(
         name = "userDetailsPref"
     )
+
     private val authToken = stringPreferencesKey("authToken")
     private val userId = stringPreferencesKey("userId")
     private val email = stringPreferencesKey("email")
-
-
-
 
     suspend fun saveUserDetails(userDetails: UserDetails) {
         context.userPreferencesDataStore.edit { preferences ->

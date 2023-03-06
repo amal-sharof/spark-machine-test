@@ -16,6 +16,7 @@ import javax.inject.Inject
 class AuthRepositoryImpl @Inject constructor(
     private val authService: AuthService
 ): AuthRepository {
+
     override fun login(loginRequestModel: LoginRequestModel): Flow<Resource<LoginResponseModel>> =
         flow{
             emit(Resource.Loading)
@@ -26,7 +27,7 @@ class AuthRepositoryImpl @Inject constructor(
                     emit(Resource.Success(response))
                 }.suspendOnError {
                     when(this.statusCode) {
-                        StatusCode.Unauthorized -> emit(Resource.Error(INCORRECT_PASS))
+                        StatusCode.Unauthorized -> emit(Resource.Error(ERR_LOGIN))
                         StatusCode.InternalServerError -> emit(Resource.Error(Constants.SERVER_ERROR))
                         else -> emit(Resource.Error(Constants.GENERIC_ERROR_MESSAGE))
                     }
@@ -56,7 +57,6 @@ class AuthRepositoryImpl @Inject constructor(
         }
 
     companion object {
-        private val INCORRECT_PASS = "Please enter valid credentials"
-//        private val
+        const val ERR_LOGIN = "Please enter valid credentials"
     }
 }

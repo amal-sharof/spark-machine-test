@@ -19,8 +19,6 @@ class DashboardViewModel @Inject constructor(
     private val _dashboardState = MutableStateFlow(DashboardState(loading = false))
     val dashboardState = _dashboardState.asStateFlow()
 
-
-
     fun getToken() = viewModelScope.launch {
         dataStoreManager.getUserFromPreferencesStore().collect { userDetails ->
             _dashboardState.update {

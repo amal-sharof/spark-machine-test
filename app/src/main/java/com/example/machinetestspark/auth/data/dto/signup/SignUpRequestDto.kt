@@ -1,6 +1,5 @@
 package com.example.machinetestspark.auth.data.dto.signup
 
-
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import androidx.annotation.Keep

@@ -51,7 +51,6 @@ object NetworkModule {
             .build()
     }
 
-
     @Provides
     @Singleton
     fun provideLoginService(retrofit: Retrofit): AuthService {
@@ -63,6 +62,4 @@ object NetworkModule {
     fun provideDashboardService(retrofit: Retrofit): DashboardService {
         return retrofit.create(DashboardService::class.java)
     }
-
-
 }

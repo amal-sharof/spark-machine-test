@@ -13,11 +13,9 @@ import dagger.hilt.android.components.ViewModelComponent
 @Module
 @InstallIn(ViewModelComponent::class)
 abstract class RepositoryModule {
- @Binds
- abstract fun provideLoginRepository(authRepositoryImpl: AuthRepositoryImpl): AuthRepository
+    @Binds
+    abstract fun provideLoginRepository(authRepositoryImpl: AuthRepositoryImpl): AuthRepository
 
- @Binds
- abstract fun provideDashboardRepository(dashboardRepositoryImpl: DashboardRepositoryImpl): DashboardRepository
-
-
+    @Binds
+    abstract fun provideDashboardRepository(dashboardRepositoryImpl: DashboardRepositoryImpl): DashboardRepository
 }
